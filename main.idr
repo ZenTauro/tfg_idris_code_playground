@@ -11,7 +11,7 @@ data Access
 
 data Store : Access -> Type
   where
-  MkStore : (secret : String) -> Store st
+    MkStore : (secret : String) -> Store st
 
 connect : (1 _ : (1 _ : Store LoggedOut) -> IO a) -> IO a
 login : (1 _ : Store LoggedOut) -> (password : String) ->
@@ -21,12 +21,15 @@ readSecret : (1 _ : Store LoggedIn) ->
              Res String (const (Store LoggedIn))
 disconnect : (1 _ : Store LoggedOut) -> IO ()
 
-storeProg : IO ()
-storeProg =
-    connect $ \s =>
-    let
-      res = login s "somePass"
-    in
-    case res of
-      (val # r) => ?help
-
+main : IO ()
+main =
+  connect $ \s =>
+  let isOk # s = login s "somePass" in
+    if isOk
+      then
+        do let secret # s = readSecret s
+           let s = logout s
+           disconnect s
+           putStrLn secret
+           pure ()
+      else disconnect s
