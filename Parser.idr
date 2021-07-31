@@ -37,7 +37,7 @@ initParse c = MkParser
 stepValidDigit : Char -> Nat -> ParserState
 stepValidDigit c k =
   if isDigit c
-    then if k == 8
+    then if k == 7
       then Letter
       else Digit (S k)
     else Invalid 1
