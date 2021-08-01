@@ -14,16 +14,11 @@ data Parser : (st : ParserState) -> Type where
      MkParser : Parser st
 
 Show ParserState where
-  show Initial = "Initial"
-  show (Digit k) = "Digit " ++ (show k)
-  show Letter = "Letter"
+  show Initial     = "Initial"
+  show (Digit k)   = "Digit "   ++ (show k)
+  show Letter      = "Letter"
   show (Invalid k) = "Invalid " ++ (show k)
-  show Valid = "Valid"
-
-stepParse : (1 input : Vect (S k) Char) ->
-            (state : Parser a) ->
-            (Vect k Char, Parser b)
-stepParse (x :: xs) state = (xs, MkParser)
+  show Valid       = "Valid"
 
 stepValidInitial : Char -> ParserState
 stepValidInitial c =
